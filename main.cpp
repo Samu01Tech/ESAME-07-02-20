@@ -176,7 +176,7 @@ void stampaCarteBanca(TcodaFIFO *carteBanca){
 }
 
 float esportaCarte(TcodaFIFO *carteBanca, TCarta tc){
-  int sommaCarte;
+  int sommaCarte = 0.0;
   char* tipoCartaStringa;
   TcartaCliente carta;
   FILE* file;
@@ -189,7 +189,7 @@ float esportaCarte(TcodaFIFO *carteBanca, TCarta tc){
     carteBanca->n--;
     carteBanca->head++;
     carteBanca->head = carteBanca->head % carteBanca->dim;
-    if(carta.tipoCarta == tc){
+    /*if(carta.tipoCarta == tc){
       switch(carta.tipoCarta){
         case CREDITO: {
           strcpy(tipoCartaStringa, "CREDITO");
@@ -206,7 +206,7 @@ float esportaCarte(TcodaFIFO *carteBanca, TCarta tc){
       }
       fprintf(file, "%s saldoEuro=%f colore(%c, %c, %c) \n", tipoCartaStringa, carta.saldo, carta.coloreR, carta.coloreG, carta.coloreB);
       sommaCarte = sommaCarte + carta.saldo;
-    }
+    }*/
   } while(carteBanca->head != carteBanca->tail);
   fclose(file);
   return sommaCarte;
