@@ -89,6 +89,7 @@ int main() {
   for(int i=0; i<5; i++) { initCarte(&carta); addCarte(carteBanca, carta); }
   stampaCarteBanca(carteBanca);
   printf("saldoTot=%f\n", esportaCarte(carteBanca, DEBITO));
+  stampaCarteBanca(carteBanca);
   
 }
 
@@ -160,6 +161,7 @@ void initCarte(TcartaCliente *ca){
   ca->saldo = saldo;
   ca->tipoCarta = tipoCarta;
   cout << "Carta creata" << endl;
+  cout << endl;
 }
 
 void addCarte(TcodaFIFO *carteBanca, TcartaCliente ca){
@@ -174,7 +176,6 @@ void stampaCarteBanca(TcodaFIFO *carteBanca){
 }
 
 float esportaCarte(TcodaFIFO *carteBanca, TCarta tc){
-  int i = carteBanca->head;
   int sommaCarte;
   char* tipoCartaStringa;
   TcartaCliente carta;
@@ -185,7 +186,7 @@ float esportaCarte(TcodaFIFO *carteBanca, TCarta tc){
     carteBanca->n--;
     carteBanca->head++;
     carteBanca->head = carteBanca->head % carteBanca->dim;
-    if(carta.tipoCarta == tc){
+    /*if(carta.tipoCarta == tc){
       switch(carta.tipoCarta){
         case CREDITO: {
           strcpy(tipoCartaStringa, "CREDITO");
@@ -202,7 +203,7 @@ float esportaCarte(TcodaFIFO *carteBanca, TCarta tc){
       }
       fprintf(file, "%s saldoEuro=%f colore(%c, %c, %c) \n", tipoCartaStringa, carta.saldo, carta.coloreR, carta.coloreG, carta.coloreB);
       sommaCarte = sommaCarte + carta.saldo;
-    }
+    }*/
   } while(carteBanca->head != carteBanca->tail);
   fclose(file);
   return sommaCarte;
