@@ -17,24 +17,22 @@ typedef struct TcartaCliente{
     strcpy(&coloreB, "0");
   }
   void stampa() {
-    cout << "======================" << endl;
-    cout << "Saldo: " << saldo << endl;
     switch(tipoCarta){
       case 0: {
-        cout << "Tipo carta: CREDITO" << endl;
+        cout << "CREDITO ";
         break;
       }
       case 1: {
-        cout << "Tipo carta: DEBITO" << endl;
+        cout << "DEBITO ";
         break;
       }
       case 2: {
-        cout << "Tipo carta: PREPAGATA" << endl;
+        cout << "PREPAGATA ";
         break;
       }
     }
-    cout << "Colore: " << coloreR << coloreG << coloreB << endl;
-    cout << "======================" << endl;
+    cout << "saldoEuro=" << saldo;
+    cout << " colore(" << coloreR << coloreG << coloreB << ")" << endl;
   }
 } TcartaCliente;
 typedef struct TcodaFIFO {
@@ -79,18 +77,18 @@ typedef struct TcodaFIFO {
 
 void initCarte(TcartaCliente *ca);
 void addCarte(TcodaFIFO *carteBanca, TcartaCliente ca);
+void stampaCarteBanca(TcodaFIFO *carteBanca);
 bool checkValoreColore(char colore);
 int random(int max, int min);
 
 int main() {
   TcodaFIFO* carteBanca = new TcodaFIFO(10);
   TcartaCliente carta;
-  /*
+  
   for(int i=0; i<5; i++) { initCarte(&carta); addCarte(carteBanca, carta); }
   stampaCarteBanca(carteBanca);
-  printf(“saldoTot=%f\n”, esportaCarte(carteBanca, DEBITO));
-  */
-  initCarte(&carta);
+  //printf(“saldoTot=%f\n”, esportaCarte(carteBanca, DEBITO));
+  
 }
 
 void initCarte(TcartaCliente *ca){
@@ -123,15 +121,15 @@ void initCarte(TcartaCliente *ca){
   do{
     switch(random(2, 1)){
       case 1: {
-        inputColoreG = random('F', 'A');
+        inputColoreB = random('F', 'A');
         break;
       }
       case 2: {
-        inputColoreG = random('9', '0');
+        inputColoreB = random('9', '0');
         break;
       }
     }
-  }while(checkValoreColore(inputColoreG) == 1);
+  }while(checkValoreColore(inputColoreB) == 1);
   cout << "caratttere colore B corretto"<< endl;
   //saldo//
   do{
@@ -168,6 +166,10 @@ void addCarte(TcodaFIFO *carteBanca, TcartaCliente ca){
   carteBanca->s[carteBanca->tail] = ca;
   carteBanca->tail++;
   carteBanca->tail = carteBanca->tail % carteBanca->dim;
+}
+
+void stampaCarteBanca(TcodaFIFO *carteBanca){
+  carteBanca->stampa();
 }
 
 bool checkValoreColore(char colore){
