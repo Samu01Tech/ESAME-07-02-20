@@ -79,6 +79,7 @@ typedef struct TcodaFIFO {
 
 TcartaCliente* initCarte(TcartaCliente* ca);
 bool checkValoreColore(char colore);
+int random(int max, int min);
 
 int main() {
   TcodaFIFO* carteBanca = new TcodaFIFO(10);
@@ -92,14 +93,73 @@ int main() {
 }
 
 TcartaCliente* initCarte(TcartaCliente* ca){
-  char inputColore;
+  char inputColoreR, inputColoreG, inputColoreB;
+  float saldo;
+  TCarta tipoCarta;
   cout << "Creazione carta" << endl;
   cout << "---------------" << endl;
+  //coloreR//
   do{
     cout << "Inserire un carattere: ";
-    cin >> inputColore;
-  }while(checkValoreColore(inputColore) == 1);
-  cout << "colore corretto"<< endl;
+    cin >> inputColoreR;
+  }while(checkValoreColore(inputColoreR) == 1);
+  cout << "caratttere colore R corretto"<< endl;
+  //coloreG//
+  do{
+    switch(random(2, 1)){
+      case 1: {
+        inputColoreG = random('F', 'A');
+        break;
+      }
+      case 2: {
+        inputColoreG = random('9', '0');
+        break;
+      }
+    }
+  }while(checkValoreColore(inputColoreG) == 1);
+  cout << "caratttere colore G corretto"<< endl;
+  //coloreB//
+  do{
+    switch(random(2, 1)){
+      case 1: {
+        inputColoreG = random('F', 'A');
+        break;
+      }
+      case 2: {
+        inputColoreG = random('9', '0');
+        break;
+      }
+    }
+  }while(checkValoreColore(inputColoreG) == 1);
+  cout << "caratttere colore B corretto"<< endl;
+  //saldo//
+  do{
+    cout << "Inserire il saldo: ";
+    cin >> saldo;
+  }while(saldo < 100.00 || saldo > 2000.00);
+  cout << "saldo corretto"<< endl;
+  //tipo carta//
+  switch(random(2, 0)){
+    case 0: {
+      tipoCarta = CREDITO;
+      break;
+    }
+    case 1: {
+      tipoCarta = DEBITO;
+      break;
+    }
+    case 2: {
+      tipoCarta = PREPAGATA;
+      break;
+    }
+  }
+  cout << "saldo corretto"<< endl;
+  ca->coloreR = inputColoreR;
+  ca->coloreG = inputColoreG;
+  ca->coloreB = inputColoreB;
+  ca->saldo = saldo;
+  ca->tipoCarta = tipoCarta;
+  return ca;
 }
 
 bool checkValoreColore(char colore){
@@ -111,5 +171,9 @@ bool checkValoreColore(char colore){
   } else {
     return 0;
   }
+}
+
+int random(int max, int min){
+  return rand() % (max - min + 1) + min;
 }
 
