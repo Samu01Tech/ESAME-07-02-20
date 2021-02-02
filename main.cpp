@@ -77,22 +77,23 @@ typedef struct TcodaFIFO {
   }
 } TcodaFIFO;
 
-TcartaCliente* initCarte(TcartaCliente* ca);
+void initCarte(TcartaCliente *ca);
+void addCarte(TcodaFIFO *carteBanca, TcartaCliente ca);
 bool checkValoreColore(char colore);
 int random(int max, int min);
 
 int main() {
   TcodaFIFO* carteBanca = new TcodaFIFO(10);
-  TcartaCliente* carta;
+  TcartaCliente carta;
   /*
   for(int i=0; i<5; i++) { initCarte(&carta); addCarte(carteBanca, carta); }
   stampaCarteBanca(carteBanca);
   printf(“saldoTot=%f\n”, esportaCarte(carteBanca, DEBITO));
   */
-  carta = initCarte(carta);
+  initCarte(&carta);
 }
 
-TcartaCliente* initCarte(TcartaCliente* ca){
+void initCarte(TcartaCliente *ca){
   char inputColoreR, inputColoreG, inputColoreB;
   float saldo;
   TCarta tipoCarta;
@@ -153,13 +154,20 @@ TcartaCliente* initCarte(TcartaCliente* ca){
       break;
     }
   }
-  cout << "saldo corretto"<< endl;
+  cout << "tipo carta corretto"<< endl;
   ca->coloreR = inputColoreR;
   ca->coloreG = inputColoreG;
   ca->coloreB = inputColoreB;
   ca->saldo = saldo;
   ca->tipoCarta = tipoCarta;
-  return ca;
+  cout << "Carta creata" << endl;
+}
+
+void addCarte(TcodaFIFO *carteBanca, TcartaCliente ca){
+  carteBanca->n++;
+  carteBanca->s[carteBanca->tail] = ca;
+  carteBanca->tail++;
+  carteBanca->tail = carteBanca->tail % carteBanca->dim;
 }
 
 bool checkValoreColore(char colore){
