@@ -1,0 +1,1 @@
+DEBITO saldoEuro=200.000000 colore(B, 6, D)DEBITO saldoEuro=400.000000 colore(D, A, E)

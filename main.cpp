@@ -78,6 +78,7 @@ typedef struct TcodaFIFO {
 void initCarte(TcartaCliente *ca);
 void addCarte(TcodaFIFO *carteBanca, TcartaCliente ca);
 void stampaCarteBanca(TcodaFIFO *carteBanca);
+float esportaCarte(TcodaFIFO *carteBanca, TCarta tc);
 bool checkValoreColore(char colore);
 int random(int max, int min);
 
@@ -87,7 +88,7 @@ int main() {
   
   for(int i=0; i<5; i++) { initCarte(&carta); addCarte(carteBanca, carta); }
   stampaCarteBanca(carteBanca);
-  //printf(“saldoTot=%f\n”, esportaCarte(carteBanca, DEBITO));
+  printf("saldoTot=%f\n", esportaCarte(carteBanca, DEBITO));
   
 }
 
@@ -170,6 +171,41 @@ void addCarte(TcodaFIFO *carteBanca, TcartaCliente ca){
 
 void stampaCarteBanca(TcodaFIFO *carteBanca){
   carteBanca->stampa();
+}
+
+float esportaCarte(TcodaFIFO *carteBanca, TCarta tc){
+  int i = carteBanca->head;
+  int sommaCarte;
+  char* tipoCartaStringa;
+  TcartaCliente carta;
+  FILE* file;
+  file = fopen("carte.txt", "w");
+  do{
+    carta = carteBanca->s[carteBanca->head];
+    carteBanca->n--;
+    carteBanca->head++;
+    carteBanca->head = carteBanca->head % carteBanca->dim;
+    if(carta.tipoCarta == tc){
+      switch(carta.tipoCarta){
+        case CREDITO: {
+          strcpy(tipoCartaStringa, "CREDITO");
+          break;
+        }
+        case DEBITO: {
+          strcpy(tipoCartaStringa, "DEBITO");
+          break;
+        }
+        case PREPAGATA: {
+          strcpy(tipoCartaStringa, "PREPAGATA");
+          break;
+        }
+      }
+      fprintf(file, "%s saldoEuro=%f colore(%c, %c, %c) \n", tipoCartaStringa, carta.saldo, carta.coloreR, carta.coloreG, carta.coloreB);
+      sommaCarte = sommaCarte + carta.saldo;
+    }
+  } while(carteBanca->head != carteBanca->tail);
+  fclose(file);
+  return sommaCarte;
 }
 
 bool checkValoreColore(char colore){
